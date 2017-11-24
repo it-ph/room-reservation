@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"  
+      ng-app="roomReservation" 
+     >
+<head>
+    <meta charset="UTF-8"/>
+	
+    <title>Room Reservation | Personiv</title>
+	<base href="/RoomReservation/"></base>
+	
+    <link href="/RoomReservation/app/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/RoomReservation/app/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
+    <link href="/RoomReservation/app/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="/RoomReservation/app/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/RoomReservation/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
+    <link href="/RoomReservation/app/bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.css" rel="stylesheet" />
+    <link href="/RoomReservation/app/css/main.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="wrapper" ng-controller="MainController">
+		<div  ng-include="'/RoomReservation/app/partials/nav.html'"></div> 
+			<ui-view></ui-view>
+		
+	</div>
+	
+	<script src ="/RoomReservation/bower_components/jquery/dist/jquery.min.js" ></script>
+	<script src ="/RoomReservation/app/bower_components/bootstrap/dist/js/bootstrap.min.js" ></script>
+	<script src ="/RoomReservation/app/bower_components/metisMenu/dist/metisMenu.min.js"></script> 
+	<script src ="/RoomReservation/app/js/sb-admin-2.js"></script> 
+	
+	<script src ="/RoomReservation/bower_components/moment/min/moment.min.js" ></script>
+	<script src ="/RoomReservation/bower_components/fullcalendar/dist/fullcalendar.min.js" ></script>
+	<script src ="/RoomReservation/bower_components/fullcalendar/dist/gcal.js" ></script>
+	
+	
+	<script src ="/RoomReservation/app/bower_components/angular/angular.min.js" ></script>
+	<script src ="/RoomReservation/app/bower_components/angular-ui-router/release/angular-ui-router.js" ></script>
+	<script src ="/RoomReservation/app/bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js" ></script>
+	<script src ="/RoomReservation/bower_components/angular-ui-calendar/src/calendar.js" ></script>
+	<script src ="/RoomReservation/app/bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.js" ></script>
+	<!--  <script src ="/RoomReservation/app/js/calendar.js" ></script>-->
+
+
+	<script src="/RoomReservation/app/ng/app.js"></script>
+	<script src="/RoomReservation/app/ng/controller/dashboard.controller.js"></script>
+	<script src="/RoomReservation/app/ng/controller/login.controller.js"></script>
+	<script src="/RoomReservation/app/ng/controller/main.controller.js"></script>
+	<script src="/RoomReservation/app/ng/controller/nav.controller.js"></script>
+	<script src="/RoomReservation/app/ng/service/reservation.service.js"></script>
+	<script src="/RoomReservation/app/ng/service/access.service.js"></script>
+	<script src ="/RoomReservation/app/js/main.js" ></script>
+</body>
+</html>

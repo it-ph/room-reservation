@@ -1,0 +1,41 @@
+ server:
+  port: 8081
+  contextPath: /RoomReservation
+  
+ spring:
+   datasource:
+     url: jdbc:mysql://localhost/room_reservation
+     username: root
+     password: 
+     driver-class-name: com.mysql.jdbc.Driver
+   thymeleaf.cache: false
+   mail:
+      host: mail.personive.com
+      port: 26
+      username: 
+      password: 
+      properties: 
+        mail: 
+          debug: true
+          transport:
+            protocol: smtp
+          smtp: 
+            auth: true
+            starttls:
+              enable: true
+              required: true            
+      protocol: smtp        
+ jwt:
+   client: reservation-client
+   secret: secret
+   expiration: 604800
+   
+ mail-receiver: "jerico.grijaldo@personiv.com"
+    
+ logging:
+   level:
+     org.springframework.web: ERROR
+     com.personiv: DEBUG
+   pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+   file: Logs.log

@@ -1,0 +1,152 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "ui-calendar",
+        "scope": null,
+        "escapedName": "ui-calendar",
+        "name": "ui-calendar",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\jerico.grijaldo\\Desktop\\test"
+    ]
+  ],
+  "_from": "ui-calendar@latest",
+  "_id": "ui-calendar@0.8.6",
+  "_inCache": true,
+  "_location": "/ui-calendar",
+  "_nodeVersion": "6.9.4",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/ui-calendar-0.8.6.tgz_1486706230869_0.5920950789004564"
+  },
+  "_npmUser": {
+    "name": "ksnyde",
+    "email": "ken@ken.net"
+  },
+  "_npmVersion": "3.5.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "ui-calendar",
+    "scope": null,
+    "escapedName": "ui-calendar",
+    "name": "ui-calendar",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/ui-calendar/-/ui-calendar-0.8.6.tgz",
+  "_shasum": "f94fcdcfe92606db76772703536bd895744ace44",
+  "_shrinkwrap": null,
+  "_spec": "ui-calendar",
+  "_where": "C:\\Users\\jerico.grijaldo\\Desktop\\test",
+  "author": {
+    "name": "Ken Snyder"
+  },
+  "bugs": {
+    "url": "https://github.com/lifegadget/ui-calendar/issues"
+  },
+  "dependencies": {
+    "ember-cli": "^2.5.0",
+    "ember-cli-babel": "^5.1.6",
+    "ember-cli-htmlbars": "^1.0.3",
+    "ember-cli-stylist": "^0.4.11",
+    "ember-truth-helpers": "^1.2.0",
+    "ui-ember-slider": "^0.4.3"
+  },
+  "description": "Date and time based controls for ambition Ember applications.",
+  "devDependencies": {
+    "bootstrap": "4.0.0-alpha.2",
+    "broccoli-asset-rev": "^2.4.2",
+    "chalk": "^1.1.3",
+    "demo-helper": "0.2.13",
+    "ember-cli": "2.5.0",
+    "ember-cli-app-version": "^1.0.0",
+    "ember-cli-autoprefixer": "0.6.0",
+    "ember-cli-dependency-checker": "^1.2.0",
+    "ember-cli-fastclick": "^1.0.3",
+    "ember-cli-flash": "^1.3.4",
+    "ember-cli-htmlbars-inline-precompile": "^0.3.1",
+    "ember-cli-inject-live-reload": "^1.4.0",
+    "ember-cli-jshint": "^1.0.0",
+    "ember-cli-moment-shim": "0.7.3",
+    "ember-cli-qunit": "^1.0.4",
+    "ember-cli-release": "1.0.0-beta.2",
+    "ember-cli-sri": "^2.1.0",
+    "ember-cli-uglify": "^1.2.0",
+    "ember-data": "^2.5.0",
+    "ember-disable-prototype-extensions": "^1.1.0",
+    "ember-disable-proxy-controllers": "^1.0.1",
+    "ember-export-application-global": "^1.0.5",
+    "ember-load-initializers": "^0.5.1",
+    "ember-moment": "6.1.0",
+    "ember-resolver": "^2.0.3",
+    "ember-try": "0.2.2",
+    "loader.js": "^4.0.1",
+    "moment": "^2.10.6",
+    "ui-animate": "0.3.2",
+    "ui-bootstrap": "0.1.9",
+    "ui-button": "^2.1.11",
+    "ui-icon": "^0.11.9",
+    "ui-responsive": "0.3.7"
+  },
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "dist": {
+    "shasum": "f94fcdcfe92606db76772703536bd895744ace44",
+    "tarball": "https://registry.npmjs.org/ui-calendar/-/ui-calendar-0.8.6.tgz"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config",
+    "demoURL": "http://development.ui-calendar.divshot.io/"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "files": [
+    "ember-cli-build.js",
+    "LICENSE.md",
+    "README.md",
+    "addon",
+    "app",
+    "bower.json",
+    "config",
+    "index.js",
+    "package.json",
+    "testem.json",
+    "vendor"
+  ],
+  "gitHead": "037c52a43d94fdde4d189de10025b8ca76764738",
+  "homepage": "https://github.com/lifegadget/ui-calendar#readme",
+  "keywords": [
+    "ember-addon"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "ksnyde",
+      "email": "ken@ken.net"
+    }
+  ],
+  "name": "ui-calendar",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lifegadget/ui-calendar.git"
+  },
+  "scripts": {
+    "build": "ember build",
+    "start": "ember server",
+    "test": "ember try:testall"
+  },
+  "version": "0.8.6"
+}

@@ -1,0 +1,72 @@
+.nav-tabs>li.active>div{
+	color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+   
+}
+
+.time-field{
+	display: inline-block;
+	padding: 10px 10px 10px 0px;
+}
+
+.time-field>label{
+	margin-right:4px;
+}
+
+.nav-tabs>li>div:hover{
+	    border-color: #eee #eee #ddd;
+	    background-color:#ddd;
+}
+.nav>li>div{
+   position: relative;
+   display: block;
+   padding: 10px 15px;
+   color: #337ab7;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+._form-label{
+	display: inline-block;
+	min-width:230px;
+	text-align: right;
+	
+}
+.fc-event .fc-content{
+	cursor: pointer;
+}
+._form-field{
+	display: inline-block;
+	max-width: 404px;
+	margin-left: 10px;
+}
+._form-row{
+}
+
+._bordered{
+	
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+
+

@@ -1,0 +1,34 @@
+{{! TOP ROW }}
+<div class="time fill">
+  <div class="incrementer side left-side fit decrease-time {{minedOut}}" onclick={{action 'decreaseTime'}}>
+    {{ui-icon id='left-incrementer' icon='chevron-left' cursor=true fw=false}}
+  </div>
+  <div class="start-time fill">
+    {{ui-slider
+      min=_start
+      max=_end
+      step=step
+      value=_shadowTime
+      formatter=tooltip
+      class='needsclick'
+      ticks=_ticks
+      ticksLabels=tickLabels
+      changed=(action 'timeChanged')
+    }}
+  </div>
+  <div class="incrementer side fit right-side increase-time {{maxedOut}} pointer" onclick={{action 'increaseTime'}}>
+    {{ui-icon icon='chevron-right' cursor=true fw=false}}
+  </div>
+</div>
+
+{{! BOTTOM ROW }}
+{{#if (gt _durationChoices.length 0)}}
+<div class="duration">
+  {{ui-buttons
+    value=duration
+    buttons=_durationChoices
+    stretch=true
+    onChange=(action 'onDurationChange' duration)
+  }}
+</div>
+{{/if}}

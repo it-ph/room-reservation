@@ -1,0 +1,135 @@
+drop database if exists room_reservation ;
+create database room_reservation;
+use room_reservation;
+
+create table users(
+	id int primary key auto_increment not null unique,
+	username varchar(255) not null unique,
+	password varchar(255) not null,
+	accountNonLocked tinyInt not null default 1,
+	accountNonExpired tinyInt not null default 1,
+	credentialsNonExpired tinyInt not null default 1,
+	enabled tinyInt not null default 1,
+	createdAt dateTime not null default CURRENT_TIMESTAMP,
+	updatedAt dateTime
+);
+create table equipments(
+	id int primary key auto_increment not null unique,
+	equipment varchar(255) not null unique,
+	createdAt dateTime not null default CURRENT_TIMESTAMP,
+	updatedAt dateTime
+);
+
+create table rooms(
+	id int primary key auto_increment not null unique,
+	room varchar(255) not null unique,
+	capacity int not null,
+	color_code varchar(255) not null unique,
+	createdAt dateTime not null default CURRENT_TIMESTAMP,
+	updatedAt dateTime
+);
+
+create table events(
+	id int primary key auto_increment not null unique,
+	title varchar(255) not null,
+	roomId int not null,
+	repeatId int,
+	start dateTime not null,
+	end dateTime not null,
+	createdBy int not null,
+	createdAt dateTime not null default CURRENT_TIMESTAMP,
+	updatedAt dateTime,
+	foreign key (roomId) references rooms(id),
+	foreign key (createdBy) references users(id)
+);
+
+create table event_equipments(
+	id int primary key auto_increment not null unique,
+	eventId int not null,
+	equipmentId int not null unique,
+	createdAt dateTime not null default CURRENT_TIMESTAMP,
+	updatedAt dateTime,
+	foreign key (eventId) references events(id),
+	foreign key (equipmentId) references equipments(id)
+);
+
+DELIMITER //
+create procedure _proc_getEvents()
+	BEGIN
+		SELECT r.id roomId, r.room, r.capacity, r.color_code color,r.createdAt roomCreated, r.updatedAt roomUpdated,
+			   e.id, e.title, e.`start`, e.`end`, e.createdAt eventCreated, e.updatedAt eventUpdated,e.repeatId,
+			   u.id userId, u.username, u.createdAt userCreated, u.updatedAt userUpdated
+		  FROM events e
+		  JOIN rooms r ON e.roomId = r.id
+		  JOIN users u ON e.createdBy = u.id;
+	END //
+DELIMITER ;
+
+DELIMITER //
+create procedure _proc_getEventById(IN event_id INT)
+	BEGIN
+		SELECT r.id roomId, r.room, r.capacity, r.color_code color,r.createdAt roomCreated, r.updatedAt roomUpdated,
+			   e.id, e.title, e.`start`, e.`end`, e.createdAt eventCreated, e.updatedAt eventUpdated, e.repeatId,
+			   u.id userId, u.username, u.createdAt userCreated, u.updatedAt userUpdated
+		  FROM events e
+		  JOIN rooms r ON e.roomId = r.id
+		  JOIN users u ON e.createdBy = u.id
+		 WHERE e.id = event_id;
+	END //
+DELIMITER ;
+
+DELIMITER //
+create procedure _proc_getEventsByRoom(IN room_id INT)
+	BEGIN
+		SELECT r.id roomId, r.room, r.capacity, r.color_code color,r.createdAt roomCreated, r.updatedAt roomUpdated,
+			   e.id, e.title, e.`start`, e.`end`, e.createdAt eventCreated, e.updatedAt eventUpdated, e.repeatId,
+			   u.id userId, u.username, u.createdAt userCreated, u.updatedAt userUpdated
+		  FROM events e
+		  JOIN rooms r ON e.roomId = r.id
+		  JOIN users u ON e.createdBy = u.id
+		 WHERE r.id = room_id;
+	END //
+DELIMITER ;
+
+DELIMITER //
+create procedure _proc_getConflicts(IN ev_start DATETIME, IN ev_end DATETIME, IN ev_id INT, IN room_id INT)
+	BEGIN
+		SELECT r.id roomId, r.room, r.capacity, r.color_code color,r.createdAt roomCreated, r.updatedAt roomUpdated,
+			   e.id, e.title, e.`start`, e.`end`, e.createdAt eventCreated, e.updatedAt eventUpdated, e.repeatId,
+			   u.id userId, u.username, u.createdAt userCreated, u.updatedAt userUpdated
+		  FROM events e
+		  JOIN rooms r ON e.roomId = r.id
+		  JOIN users u ON e.createdBy = u.id
+		 WHERE (ev_start <= e.end AND ev_end >= e.start) AND e.id != ev_id AND e.roomId = room_id;
+	END //
+DELIMITER ;
+
+DELIMITER //
+create procedure _proc_getTimeConflicts(IN ev_start DATETIME, IN ev_end DATETIME, IN room_id INT)
+	BEGIN
+		SELECT r.id roomId, r.room, r.capacity, r.color_code color,r.createdAt roomCreated, r.updatedAt roomUpdated,
+			   e.id, e.title, e.`start`, e.`end`, e.createdAt eventCreated, e.updatedAt eventUpdated, e.repeatId,
+			   u.id userId, u.username, u.createdAt userCreated, u.updatedAt userUpdated
+		  FROM events e
+		  JOIN rooms r ON e.roomId = r.id
+		  JOIN users u ON e.createdBy = u.id
+		 WHERE (ev_start <= e.end AND ev_end >= e.start) AND e.roomId = room_id;
+	END //
+DELIMITER ;
+
+
+INSERT INTO users(username,password) VALUES('Jerico','test');
+
+INSERT INTO rooms(room,capacity,color_code) 
+VALUES ('6TH STREET',23,'#f00001'),
+	   ('LAKE AUSTIN',23,'#222222'),
+	   ('LONGHORN',23,'#f5b903'),
+	   ('MANCHACA',23,'#20710a'),
+	   ('PECAN',23,'#001c80'),
+	   ('STEVIE RAY',23,'#190355'),
+	   ('TAJ MAHAL',23,'#36024d'),
+	   ('THE OASIS',23,'#fd1c00');
+
+  
+
+  
