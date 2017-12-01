@@ -1,19 +1,23 @@
 <div id="page-wrapper" style="height: 100vh;">
 	<div class ="row" >
 		<div class ="panel panel-primary">
-			<div class="panel-heading">Rooms</div>
+			<div class="panel-heading">Events</div>
 			<div class ="panel-body">
 			   <table class="table table-striped table-bordered table-hover">
 	            <thead>
 	              <th>Room</th>
-	              <th>Capacity</th>
-	              <th>Color Code</th>
+	              <th>Event</th>
+	              <th>Start</th>
+	              <th>End</th>
+	              <th>Repeat</th>
 	            </thead>
 	            <tbody>
 	            <tr ng-repeat="item in filteredList">
-	               <td>{{item.room}}</td>
-	               <td>{{item.capacity}}</td>
-	               <td>{{item.color_code}}</td>
+	               <td>{{item.room.room}}</td>
+	               <td>{{item.title}}</td>
+	               <td>{{item.start | date:'MMM dd, yyyy hh:mm:ss a'}}</td>
+	               <td>{{item.end | date:'MMM dd, yyyy hh:mm:ss a'}}</td>
+	               <td>{{item.repeatId != ''? 'YES': 'NO'}}</td>
 	            </tr>
 	            </tbody>
 	          </table>

@@ -1,45 +1,12 @@
 angular
 	.module('roomReservation')
-	.controller('DashboardController',['$scope','$filter','ReservationDataOp',function($scope,$filter,ReservationDataOp){
-
+	.controller('CalendarController',['$scope','$filter','ReservationDataOp',function($scope,$filter,ReservationDataOp){
+		
 		$scope.events =[];
 		$scope.filteredEvents = [];
 		
 		$scope.rooms =[];
-		$scope.roomSelection =[];
-		
 		$scope.uiConfig ={};
-		
-		  $scope.schedule ={
-				  title:undefined,
-				  events:[],
-				  room:{},
-				  createdBy:{}
-		  };
-		  
-		  $scope.weekDaySelections = [
-			  { num: 0, text: 'Su' , selected: false },
-			  { num: 1, text: 'Mo' , selected: false },
-			  { num: 2, text: 'Tu' , selected: false },
-			  { num: 3, text: 'We' , selected: false },
-			  { num: 4, text: 'Th' , selected: false },
-			  { num: 5, text: 'Fr' , selected: false },
-			  { num: 6, text: 'Sa' , selected: false },
-		  ];
-		  
-		  $scope.selectDay = function(weekday){
-			  weekday.selected = !weekday.selected;
-		  };
-		  
-		  $scope.selectedDays =[];
-		  
-		  $scope.isRepeat = false;
-		  
-		  $scope.schedStartDate = new Date();			  
-		  $scope.schedEndDate = new Date();
-		  $scope.repeatEnd = new Date();
-		  
-		
 		
 		ReservationDataOp
 			.getEvents()
@@ -78,7 +45,6 @@ angular
 				
 			});
 
-		
 	    $scope.uiConfig.calendar = getCalendar($scope.events);
 	    
 		$scope.tabSelect = function(tab){
@@ -88,70 +54,125 @@ angular
 			$scope.uiConfig.calendar = getCalendar(events);
 		}
 		
-	
-
+		
+		/* alert on eventClick */
+	    $scope.alertOnEventClick = function( date, jsEvent, view){
+	        $scope.alertMessage = (date.title + ' was clicked ');
+	        
+	       // console.log(date);
+	        
+	        reservation ={
+	        		id: date.id,
+	        		title: date.title,
+	        		start: $filter('date')(date.start.format('YYYY-MM-DD HH:mm:ss')),//moment.js format
+	        		end: $filter('date')(date.end.format('YYYY-MM-DD HH:mm:ss')),
+	        	}
+	     
+	        console.log(reservation);
+	       
+		};
+		
+		/* alert on Drop */
+	    $scope.alertOnDrop = function(date, delta, revertFunc, jsEvent, ui, view){
+	       
+	       
+	       s = date.start.format('YYYY-MM-DD HH:mm:ss');
+	       e = date.end.format('YYYY-MM-DD HH:mm:ss');
+	       
+	       reservation = {
+	    		   
+	        		id: date.room_event.event.id,
+	        		title: date.title,
+	        		start: new Date(s),//moment.js format
+	        		end: new Date(e),
+	        	}
+	     
+	       
+	       ReservationDataOp
+		       	.updateEvent(reservation)
+		       	.then(function(response){
+		       		
+		       		response.data.start = $filter('date')(response.data.start,'yyyy-MM-dd HH:mm:ss');
+		       		response.data.end = $filter('date')(response.data.end,'yyyy-MM-dd HH:mm:ss');
+		       		
+		       		console.log(response);
+		       	})
+		       	.catch(function(error){
+		       		console.log(error);
+		       	})
+	    };
+	    
+	    /* alert on Resize */
+	    $scope.alertOnResize = function(date, delta, revertFunc, jsEvent, ui, view ){
+	    	 s = date.start.format('YYYY-MM-DD HH:mm:ss');
+		       e = date.end.format('YYYY-MM-DD HH:mm:ss');
+		       
+		       reservation = {
+		    		   
+		        		id: date.room_event.event.id,
+		        		title: date.title,
+		        		start: new Date(s),//moment.js format
+		        		end: new Date(e),
+		        	}
+		     
+		       
+		       ReservationDataOp
+			       	.updateEvent(reservation)
+			       	.then(function(response){
+			       		
+			       		response.data.start = $filter('date')(response.data.start,'yyyy-MM-dd HH:mm:ss');
+			       		response.data.end = $filter('date')(response.data.end,'yyyy-MM-dd HH:mm:ss');
+			       		
+			       		console.log(response);
+			       	})
+			       	.catch(function(error){
+			       		console.log(error);
+			       	})
+	    };
+	    
 	   $scope.conflictEvents =[];
 	   $scope.numConflicts = 0;
-	   
-	   $scope.loadRooms = function(){
-		   
-			ReservationDataOp
-			.getRooms()
-			.then(function(response){
-				$scope.roomSelections = response.data;					
-			}).
-			catch(function(error){
-				
-			});
-	   }
-	   
-	
-	
-	   function getCalendar(events){
-	      
-		//return a calendar object
-		calendar = {
-			        height: 500,
-			        editable: true,
-			        nextDayThreshold: "00:00:00",
-			        timezone: false,
-			        snapDuration: "00:01:00",
-			        allDaySlot: false,
-			        header:{
-			        	left: 'prev,next today',
-						center: 'title',
-						right: 'month,agendaWeek,agendaDay,listMonth,listWeek,listDay'
-			        },
-			        views: {
-			        	listMonth: { buttonText: 'list month' },
-			        	listWeek: { buttonText: 'list week' },
-			        	listDay: { buttonText: 'list day' },
-			        },
-			        eventClick: onEventClick,
-			        eventDrop: onEventDrop,
-			        eventResize: onResize,
-			        events: events
-		      };
+		 
+		 function getCalendar(events){
+		      
+			//return a calendar object
+			calendar = {
+				        height: 450,
+				        editable: true,
+				        nextDayThreshold: "00:00:00",
+				        timezone: false,
+				        snapDuration: "00:05:00",
+				        allDaySlot: false,
+				        header:{
+				        	left: 'prev,next today',
+							center: 'title',
+							right: 'month,agendaWeek,agendaDay,listMonth,listWeek,listDay'
+				        },
+				        views: {
+				        	listMonth: { buttonText: 'list month' },
+				        	listWeek: { buttonText: 'list week' },
+				        	listDay: { buttonText: 'list day' },
+				        },
+				        eventClick: onEventClick,
+				        eventDrop: onEventDrop,
+				        eventResize: onResize,
+				        events: events
+			      };
 			return calendar;
-		}
-	   
-		function onEventClick(date, jsEvent, view){
+			
+		 }
+		 function onEventClick(date, jsEvent, view){
 			  reservation ={
-		        		event: date.id,
-		        		title: date.room_event.title,
-		        		room: date.room_event.room.room,
-		        		start: $filter('date')(date.start.format('MMM. DD, YYYY hh:mm a')),//moment.js format
-		        		end: $filter('date')(date.end.format('MMM. DD, YYYY hh:mm a')),
+		        		id: date.id,
+		        		title: date.title,
+		        		start: $filter('date')(date.start.format('YYYY-MM-DD HH:mm:ss')),//moment.js format
+		        		end: $filter('date')(date.end.format('YYYY-MM-DD HH:mm:ss')),
 		        	}
-			  console.log(date);
-			  
-			  $scope.selectedEvent = reservation;
-			  
-			  $('#view-event').modal('show');
-		}
+			  console.log(reservation);
+		 }
 		 
 		 
-		function onEventDrop(date, delta, revertFunc, jsEvent, ui, view){
+		 function onEventDrop(date, delta, revertFunc, jsEvent, ui, view){
 		       	       
 		       s = moment(date.start);
 		       e = moment(date.end);
@@ -254,7 +275,36 @@ angular
 		 }
 		 
 		 function onResize(date, delta, revertFunc, jsEvent, ui, view ){
-
+//			   s = date.start.format('YYYY-MM-DD HH:mm:ss');
+//		       e = date.end.format('YYYY-MM-DD HH:mm:ss');
+//		       
+//		       reservation = {
+//		    		   
+//		        		id: date.room_event.id,
+//		        		title: date.title,
+//		        		start: new Date(s),//moment.js format
+//		        		end: new Date(e),
+//		        		room: date.room_event.room,
+//		        		createdBy: date.room_event.createdBy
+//		        	}
+//		     
+//		       console.log(reservation);
+//		       
+//		       
+//		       ReservationDataOp
+//			    .updateEvent(reservation)
+//			    .then(function(response){
+//			       		
+//		       		response.data.start = $filter('date')(response.data.start,'yyyy-MM-dd HH:mm:ss');
+//		       		response.data.end = $filter('date')(response.data.end,'yyyy-MM-dd HH:mm:ss');
+//		       		
+//		       		console.log(response);
+//		       	})
+//		       	.catch(function(error){
+//		       		console.log(error);
+//		       		revertFunc();
+//		       	})
+			 
 			   s = moment(date.start);
 		       e = moment(date.end);
 		       
@@ -422,98 +472,61 @@ angular
 			  $scope.selectedRoom ={};
 			  $scope.eventTitle ='';
 			  
-			  
-			  
-			  //timepicker
-			  $scope.changed = function () {
-				    console.log('time changed');
-			  };
-			  
-			
-			  
-			   function isValidEvent(){
-				   
-			   }
-			   
-		  
 			  $scope.addEvent = function(){
 				  
+				  e = moment($scope.endDate);
+				  s = moment($scope.startDate);
 				  
-				 e = moment($scope.endDate);
-				 s = moment($scope.startDate);
-				 until = moment($scope.repeatEnd);
-				 
 				 if(s.diff(e) < 0 )  {
 					 
 					 events =[];
 					 
-//					 events.push({
-//						title: $scope.eventTitle,
-//						start: new Date(s.format('YYYY-MM-DD HH:mm:ss')),
-//						end: new Date(e.format('YYYY-MM-DD HH:mm:ss')),
-//						room: $scope.selectedRoom,
-//						createdBy: {id:1}
-//					 });
+					 events.push({
+						title: $scope.eventTitle,
+						start: new Date(s.format('YYYY-MM-DD HH:mm:ss')),
+						end: new Date(e.format('YYYY-MM-DD HH:mm:ss')),
+						room: $scope.selectedRoom,
+						createdBy: {id:1}
+					 });
 					 
 					 mondays = [];
+					 daysOfWeek =[1,3,5];
 					 
-					 daysOfWeek =$scope.weekDaySelections;//[];
-					
-					
+					 
+					 
 					 temp  = s.clone();
 					 
-					// mondays.push(temp.format('YYYY-MM-DD HH:mm:ss'));
+					 mondays.push(temp.format('MMM-DD-YYYY'));
 					 
-					 
-					 while(temp.isBefore(until)){
+					 while(temp.isBefore(e)){
 						 
+						 temp = temp.add(1,'days');
 						
-
-						 temp = temp.add(1,'days');	 
-						 day = temp.weekday();
-						 
-						
-						 
 						// console.log(temp.weekday());
 						 
-						 if($scope.weekDaySelections[day].selected){
-							 mondays.push(temp.format('MMM-DD-YYYY'));
-							 
-							 tempStart = temp.clone();
-							 
-							 tempEnd = temp.clone();
-							 
-							 tempEnd.set({ h: e.hour(), m: e.minutes()});
-							 events.push({
-									title: $scope.eventTitle,
-									start: new Date(tempStart.format('YYYY-MM-DD HH:mm:ss')),
-									end: new Date(tempEnd.format('YYYY-MM-DD HH:mm:ss')),
-									room: $scope.selectedRoom,
-									createdBy: {id:1}
-								 });
+						 for(i =0;i<daysOfWeek.length; i++){
+							 //console.log(daysOfWeek[0]);
+							 if(temp.weekday() === daysOfWeek[i]){
+								 mondays.push(temp.format('MMM-DD-YYYY'));
+							 }
 						 }
-						 
-						 
 						 
 						 //mondays.push(temp.format('MMM-DD-YYYY'));
 					 }
 					 
-					 
 					 console.log(mondays);
 //					console.log(events);
 //					 
-					ReservationDataOp
-						.addEvent(events)
-						.then(function(response){
-							console.log(response);
-						})
-						.catch(function(error){
-							console.log(error);
-						})
-				
+//					ReservationDataOp
+//						.addEvent(events)
+//						.then(function(response){
+//							console.log(response);
+//						})
+//						.catch(function(error){
+//							console.log(error);
+//						})
+					 
 				 }
 			  }
-			  
-			
 		 
 	}]);

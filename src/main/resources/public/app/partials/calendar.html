@@ -1,0 +1,89 @@
+<div id="page-wrapper" style="height: 100vh;">
+	<div class ="row" >
+	     <ul class="nav nav-tabs" >					 
+		   <li ng-repeat="room in rooms" class="nav-item {{ $index ==0 ? 'active': '' }}" >
+		  	 <div ng-click="tabSelect(room.id)">{{room.room}}</div>
+		   </li>	 
+		  </ul>		  			 				        	
+			 	  <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>       	
+		<div> <button class="btn btn-primary" data-toggle="modal" data-target="#add-event" >Add</button></div>
+	</div>
+			<!-- Add Event Modal -->
+  <div class="modal fade" id="add-event" role="dialog">
+     <div class="modal-dialog modal-lg">
+
+         <!-- Modal content-->
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title">Event details</h4>
+             </div>
+             <form ng-submit="addEvent()">
+             <div class="modal-body">
+             	<div class="form-row"><label>Title</label><input type="text" class="form-control form-field" ng-model ="eventTitle"/></div>
+             	<div class="form-row">
+            	  <label>Date and Time</label>
+            	   <div class="time-field">
+		             <datetimepicker ng-model="startDate" date-format="MMM. dd, yyyy" date-options="dateOptions"  date-disabled="isDisabledDate(date, mode)"  show-spinners="true"></datetimepicker>
+				   </div>
+				   <div class="time-field"> 
+					<label>To </label>
+		            <datetimepicker ng-model="endDate" date-format="MMM. dd, yyyy" date-options="dateOptions"  date-disabled="isDisabledDate(date, mode)"  show-spinners="true"></datetimepicker>
+				   </div>
+             	  </div>
+             
+				  <div class="form-row">
+				  	<label>Location</label>
+				  	<select ng-model="selectedRoom" ng-options="room as room.room  for room in rooms" class="form-control form-field"></select>
+				  </div>
+				  
+				
+				  <div class="form-row">
+				    <label>Repeat</label>
+					 <div class="day-selection btn-group" data-toggle="buttons">
+					 	<label class=" btn btn-default">Su
+							<input type="checkbox"/>
+					 	</label>
+					 	<label class=" btn btn-default">Mo
+							<input type="checkbox" />
+					 	</label>
+					 	<label class=" btn btn-default">Tu
+							<input type="checkbox"/>
+					 	</label>
+					 	<label class=" btn btn-default">We
+							<input type="checkbox"/>
+					 	</label>
+					 	<label class=" btn btn-default">Th
+							<input type="checkbox"/>
+					 	</label>
+					 	<label class=" btn btn-default">Fr
+							<input type="checkbox"/>
+					 	</label>
+					 	<label class=" btn btn-default">Sa
+							<input type="checkbox"/>
+					 	</label>
+					</div>
+				  </div>
+				  
+				   <div class="form-group text-left has-error">
+                      <div class="help-block" style ="text-align:center;">
+                     	<i class="lnr-"></i><span>{{error}}</span>
+                      </div>
+                    </div>
+			  </div>    
+		      <div class="modal-footer">
+                 <button type="submit" class="btn btn-default" >Add</button>
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          	</div>
+           </form>
+         </div>
+
+     </div>
+   </div> 
+   
+	<script>
+		$('.day-selection').on('click','>label',function(){
+			console.log($(this).children().is(':checked'));
+		});
+	</script>
+</div>

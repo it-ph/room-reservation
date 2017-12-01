@@ -76,7 +76,8 @@ public class EventDao extends JdbcDaoSupport{
 	}
 
 	public List<Event> getNewEventsConflicts(List<Event> events) {
-		return null;
+		String query = conflictQueryBuilder(events);		
+		return jdbcTemplate.query(query, new EventRowMapper());
 	}
 
 	public List<Event> getConflicts(List<Event> events) {
@@ -90,13 +91,13 @@ public class EventDao extends JdbcDaoSupport{
 					  " WHERE ";
 		
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		for(int i=0; i <events.size(); i++) {
 			
 			Event e = events.get(i);
 			
-			String filter ="(('"+formatter.format(e.getStart())+"' <= e.end AND '"+ formatter.format(e.getEnd())+"'  >= e.start) "
+			String filter ="(('"+formatter.format(e.getStart())+"' < e.end AND '"+ formatter.format(e.getEnd())+"'  > e.start) "
 			               +((e.getRepeatId() != null)?" AND (e.repeatId != "+ e.getRepeatId() +" OR e.repeatId IS NULL) ":" ")
 			               +" AND e.id !="+ e.getId()+" "
 			               +" AND e.roomId = "+e.getRoom().getId()+")";
@@ -106,37 +107,92 @@ public class EventDao extends JdbcDaoSupport{
 			query += (i == (events.size()-1))? "" :" OR ";
 		}
 		
-		System.out.println(query);
-		
 		return jdbcTemplate.query(query, new EventRowMapper());
+	}
+	
+	private String conflictQueryBuilder(List<Event> events) {
+		String query ="SELECT r.id roomId, r.room, r.capacity, r.color_code color,r.createdAt roomCreated, r.updatedAt roomUpdated, " + 
+				  "		  e.id, e.title, e.start, e.end, e.createdAt eventCreated, e.updatedAt eventUpdated, e.repeatId, " + 
+				  "	      u.id userId, u.username, u.createdAt userCreated, u.updatedAt userUpdated " + 
+				  "  FROM events e " + 
+				  "  JOIN rooms r ON e.roomId = r.id " + 
+				  "  JOIN users u ON e.createdBy = u.id "+
+				  " WHERE ";
+	
+	
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		for(int i=0; i <events.size(); i++) {
+			
+			Event e = events.get(i);
+			
+			String filter ="(('"+formatter.format(e.getStart())+"' < e.end AND '"+ formatter.format(e.getEnd())+"'  > e.start) "
+		               +((e.getRepeatId() != null)?" AND (e.repeatId != "+ e.getRepeatId() +" OR e.repeatId IS NULL) ":" ")
+		               +" AND e.id !="+ e.getId()+" "
+		               +" AND e.roomId = "+e.getRoom().getId()+")";
+	
+		
+			query += filter+"";
+			query += (i == (events.size()-1))? "" :" OR ";
+			
+		
+		}
+		return query;
 	}
 
 	public void addEvents(List<Event> events) {
 		
-		String sql ="INSERT INTO events(title,roomId,start,end,createdBy) VALUES(?,?,?,?,?)";
+		String sql ="INSERT INTO events(title,roomId,start,end,createdBy,repeatId) VALUES(?,?,?,?,?,?)";
 		
+		String sql2 ="call _proc_getLastRepeatId()";
 		
+		List<Event> last = jdbcTemplate.query(sql2, new EventRowMapper());
 		
-		jdbcTemplate.batchUpdate(sql,new BatchPreparedStatementSetter() {
-
-			@Override
-			public int getBatchSize() {
-				return events.size();
-			}
-
-			@Override
-			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				
-				Event e = events.get(i);
-				
-				ps.setString(1, e.getTitle());
-				ps.setLong(2, e.getRoom().getId());
-				ps.setTimestamp(3, new Timestamp(e.getStart().getTime()));
-				ps.setTimestamp(4, new Timestamp(e.getEnd().getTime()));
-				ps.setLong(5, e.getCreatedBy().getId());
-			}
+		Long currentIndex = null;
+		
+		if(last.isEmpty()) {
 			
-		});
+			currentIndex = 0L;
+			
+		}else {
+			
+			currentIndex = last.get(0).getRepeatId()+1;
+		}
+		
+		
+		jdbcTemplate.batchUpdate(sql,new EventBatchPreparedStatement(events,currentIndex));
+	}
+	
+	/*Helper class for batch update processing*/
+	private class EventBatchPreparedStatement implements BatchPreparedStatementSetter{
+		
+		private List<Event> events;
+		private Long repeatId;
+		
+		public  EventBatchPreparedStatement(List<Event> events, Long repeatId) {
+			this.events = events;
+			this.repeatId = repeatId;
+		}
+		
+		@Override
+		public int getBatchSize() {
+			return events.size();
+		}
+
+		@Override
+		public void setValues(PreparedStatement ps, int i) throws SQLException {
+			
+			Event e = events.get(i);
+			
+			ps.setString(1, e.getTitle());
+			ps.setLong(2, e.getRoom().getId());
+			ps.setTimestamp(3, new Timestamp(e.getStart().getTime()));
+			ps.setTimestamp(4, new Timestamp(e.getEnd().getTime()));
+			ps.setLong(5, e.getCreatedBy().getId());
+			ps.setLong(6, repeatId);
+		}
+		
+	
 	}
 
 	public void updateEvents(List<Event> events) {

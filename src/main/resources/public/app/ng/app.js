@@ -13,7 +13,16 @@ angular
 	        templateUrl: '/RoomReservation/app/partials/dashboard.html', 
 	        controller: 'DashboardController',       
 	    })
-	    
+    	 .state("rooms", {
+	        url: '/rooms',
+	        templateUrl: '/RoomReservation/app/partials/room.html', 
+	        controller: 'RoomController',
+    	 })
+    	 .state("events", {
+	        url: '/events',
+	        templateUrl: '/RoomReservation/app/partials/events.html', 
+	        controller: 'EventController',
+    	 })
 	    .state("login", {
 	        url: '/login',
 	        templateUrl: '/RoomReservation/app/partials/login.html', 

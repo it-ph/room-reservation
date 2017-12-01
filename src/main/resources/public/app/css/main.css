@@ -1,3 +1,10 @@
+.btn>.day-selection>.day-option{
+	display: none;
+}
+._custom-control{
+	display: inline-block;
+	max-width: 790px;
+}
 .nav-tabs>li.active>div{
 	color: #555;
     cursor: default;
@@ -5,6 +12,45 @@
     border: 1px solid #ddd;
     border-bottom-color: transparent;
    
+}
+.spacer{
+	
+	height:10px;
+}
+.time-picker{
+	display: inline-block;
+}
+
+.time-field label{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.btn-round{
+	border-radius:50%;
+	width: 100px;
+	height: 100px;
+	bottom:0;
+	right:0;
+	position: fixed;
+	z-index: 999;
+	font-size: 24px;
+	margin: 10px;
+}
+
+
+.form-row{
+	display: inline-block;
+	width: 100%;
+	padding: 10px 0;
+}
+
+.form-field{
+	max-width: 764px;
+	display: inline-block;
+}
+.form-row>label{
+	min-width:100px;
 }
 
 .time-field{

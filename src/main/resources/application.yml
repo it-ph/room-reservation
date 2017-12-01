@@ -10,8 +10,8 @@
      driver-class-name: com.mysql.jdbc.Driver
    thymeleaf.cache: false
    mail:
-      host: mail.personive.com
-      port: 26
+      host: 
+      port: 
       username: 
       password: 
       properties: 
@@ -30,7 +30,7 @@
    secret: secret
    expiration: 604800
    
- mail-receiver: "jerico.grijaldo@personiv.com"
+ mail-receiver: 
     
  logging:
    level:

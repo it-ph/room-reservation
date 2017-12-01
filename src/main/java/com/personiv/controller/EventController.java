@@ -93,14 +93,14 @@ public class EventController {
 		List<Event> conflicts = evtService.getNewEventsConflicts(events);
 		
 		if(conflicts.isEmpty()) {
-			
-			
+			evtService.addEvents(events);
+			return ResponseEntity.ok(events);
 			
 		}else {
 			return ResponseEntity.status(422).body(conflicts);
 		}
 		
-		return ResponseEntity.ok(events);
+		
 	}
 	
 	
